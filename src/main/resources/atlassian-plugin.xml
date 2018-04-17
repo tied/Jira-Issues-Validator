@@ -1,0 +1,61 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/pluginLogo.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <component key="cjitService" class="com.bitbucket.cjit.CjitServiceImpl" public="true">
+        <interface>com.bitbucket.cjit.CjitService</interface>
+    </component>
+
+    <component-import key="soyTemplateRenderer" interface="com.atlassian.soy.renderer.SoyTemplateRenderer"/>
+    <component-import key="jiraservice" interface="com.atlassian.bitbucket.integration.jira.JiraIssueService"/>
+    <!--<component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties" />
+
+    <component-import key="applicationLinkService" interface="com.atlassian.applinks.api.ApplicationLinkService" />-->
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="check-jira-issue-type"/>
+    
+    <!-- add our web resources -->
+    <web-resource key="check-jira-issue-type-resources" name="check-jira-issue-type Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        
+        <resource type="download" name="check-jira-issue-type.css" location="/css/check-jira-issue-type.css"/>
+        <resource type="download" name="check-jira-issue-type.js" location="/js/check-jira-issue-type.js"/>
+        <resource type="download" name="images/" location="/images"/>
+
+        <context>check-jira-issue-type</context>
+    </web-resource>
+
+    <!--
+    <repository-hook key="Check-JIRA-IssueType" name="JIRA Issues Validator" i18n-name-key="hook.guide.IssueCheck.name" class="com.bitbucket.cjit.CheckJiraIssueType" configurable="false">
+        <description>CJIT pre-receive hook.</description>
+        <config-form name="CJIT Hook Config" key="cjit-config">
+            <view>check.jira.issue.type.formContents</view>
+            <directory location="/static/"/>
+        </config-form>
+        <icon>images/pluginLogo.png</icon>
+    </repository-hook>-->
+
+    <repository-merge-check key="PR-Check-JIRA-IssueType" name="JIRA Issues Validator" i18n-name-key="hook.guide.IssueCheck.name" class="com.bitbucket.cjit.CheckJiraIssueType">
+        <description>Enforces that pull requests must have valid JIRA issues as defined in JQL.</description>
+        <icon>images/pluginLogo.png</icon>
+        <config-form name="CJIT Hook Config" key="cjit-config">
+            <view>check.jira.issue.type.formContents</view>
+            <directory location="/static/"/>
+        </config-form>
+    </repository-merge-check>
+
+    <client-resource key="CJIT-config-serverside">
+        <directory location="/static/">
+            <include>/**/hookconfig.soy</include>
+        </directory>
+        <dependency>com.atlassian.bitbucket.server.bitbucket-web:server-soy-templates</dependency>
+        <dependency>com.atlassian.bitbucket.server.bitbucket-web:global</dependency>
+    </client-resource>
+    
+</atlassian-plugin>

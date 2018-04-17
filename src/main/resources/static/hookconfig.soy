@@ -1,0 +1,34 @@
+{namespace check.jira.issue.type}
+/**
+ * @param config
+ * @param errors
+ */
+{template .formContents}
+
+	<h3>Branch Requirements</h3>
+
+    {call aui.form.textField}
+  		{param id: 'branchToCheck' /}
+  		{param labelContent: 'Branches' /}
+  		{param value: $config['branchToCheck'] /}
+  		{param descriptionText: 'Check JIRA issue type in commits made for specified branches. Separate multiple branch names with a comma.' /}
+  		{param errorTexts: $errors ? $errors['branchToCheck'] : null /}
+    {/call}
+
+    {call aui.form.textField}
+        {param id: 'jql' /}
+        {param labelContent: 'JQL' /}
+        {param value: $config['jql'] /}
+        {param descriptionText: 'Specify JQL query to match against JIRA issues' /}
+        {param errorTexts: $errors ? $errors['issueTypes'] : null /}
+    {/call}
+
+    {call aui.form.textField}
+        {param id: 'jiraIssueRegex' /}
+        {param labelContent: 'JIRA Issue Regex' /}
+        {param value: $config['jiraIssueRegex'] /}
+        {param descriptionText: 'Specify regex to match valid JIRA issues. Other issue like strings will be ignored for validation.' /}
+        {param errorTexts: $errors ? $errors['jiraIssueRegex'] : null /}
+    {/call}
+
+{/template}
